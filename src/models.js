@@ -15,6 +15,16 @@ class User {
     const { rows } = await pool.query(query);
     return rows;
   }
+  static async deleteTeacher(newTeacher, oldTeacher) {
+    await pool.query(
+      "UPDATE course SET teacher_id = $1 WHERE teacher_id = $2",
+      [newTeacher, oldTeacher]
+    );
+    const { rows } = await pool.query("DELETE FROM useraccount WHERE id = $1", [
+      oldTeacher,
+    ]);
+    return rows;
+  }
   static async deleteStudent(studentId, courseId) {
     try {
       const userQueryResult = await pool.query(

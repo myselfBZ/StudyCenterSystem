@@ -13,6 +13,7 @@ router.get(
   verifyToken,
   UserAPIHandler.getTeacherCourses
 );
+router.delete("/teachers/:id", verifyToken, UserAPIHandler.deleteTeacher);
 router.post("/courses/", verifyToken, CourseAPIHandler.createCourse);
 router.post("/students/", verifyToken, UserAPIHandler.createStudent);
 router.post("/courses/:id/students/", verifyToken, CourseAPIHandler.enroll);

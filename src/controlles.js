@@ -10,7 +10,6 @@ class UserAPIHandler {
     if (!user) {
       return res.status(404).json({ message: "wrong username or password" });
     }
-
     const validPass = await bcrypt.compare(password, user.password);
     if (!validPass) {
       return res.status(404).json({ message: "wrong username or password" });
@@ -21,6 +20,16 @@ class UserAPIHandler {
       { expiresIn: "2h" }
     );
     return res.json({ message: "You are logged in", token: token });
+  }
+  static async deleteTeacher(req, res) {
+    try {
+      const oldTeacher = req.params.id;
+      const { newTeacher } = req.body;
+      const rows = await User.deleteTeacher(newTeacher, oldTeacher);
+      return res.json(rows);
+    } catch (err) {
+      return res.json({ message: "Error" });
+    }
   }
   static async delteStudent(req, res) {
     try {
