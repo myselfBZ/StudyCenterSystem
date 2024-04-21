@@ -1,10 +1,10 @@
 const { Pool } = require("pg");
 
 const pool = new Pool({
-  user: "myusername",
-  password: "mypassword",
+  user: "postgres",
+  password: "new_password",
   port: "5432",
-  database: "db_name",
+  database: "wisdom",
   host: "localhost",
 });
 
@@ -14,6 +14,31 @@ class User {
       "SELECT phone_number, first_name, last_name FROM useraccount WHERE is_staff='1' AND is_admin='0'";
     const { rows } = await pool.query(query);
     return rows;
+  }
+  static async deleteStudent(studentId, courseId) {
+    try {
+      const userQueryResult = await pool.query(
+        "SELECT * FROM useraccount WHERE id=$1",
+        [studentId]
+      );
+
+      if (userQueryResult.rows.length === 0) {
+        return "User not found";
+      }
+
+      await pool.query("BEGIN");
+      await pool.query(
+        "DELETE FROM enrollments WHERE student_id = $1 AND course_id = $2",
+        [studentId, courseId]
+      );
+      await pool.query("DELETE FROM useraccount WHERE id = $1", [studentId]);
+      await pool.query("COMMIT");
+
+      return "Deleted successfully";
+    } catch (error) {
+      await pool.query("ROLLBACK");
+      throw error;
+    }
   }
   static async getTeacher(id) {
     const query =

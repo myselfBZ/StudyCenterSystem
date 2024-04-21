@@ -5,6 +5,7 @@ const { UserAPIHandler } = require("./controlles");
 const { CourseAPIHandler } = require("./controlles");
 router.post("/log-in/", UserAPIHandler.logIn);
 router.post("/teachers/", verifyToken, UserAPIHandler.createTecher);
+router.delete("/students/:id", verifyToken, UserAPIHandler.delteStudent);
 router.get("/teachers/", verifyToken, UserAPIHandler.getTeachers);
 router.get("/teachers/:id", verifyToken, UserAPIHandler.getTeacher);
 router.get(

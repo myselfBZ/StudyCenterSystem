@@ -22,6 +22,16 @@ class UserAPIHandler {
     );
     return res.json({ message: "You are logged in", token: token });
   }
+  static async delteStudent(req, res) {
+    try {
+      const studentId = req.params.id;
+      const { courseId } = req.body;
+      const result = await User.deleteStudent(studentId, courseId);
+      return res.json({ message: result });
+    } catch (err) {
+      console.log(err);
+    }
+  }
   static async createTecher(req, res) {
     if (!req.isAdmin) {
       return res.status(401).json({ message: "Unauthorized access!" });
