@@ -184,6 +184,14 @@ class Course {
     const { rows } = await pool.query(query, [studentId, courseId]);
     return rows[0];
   }
+  static async delete(courseId) {
+    const query = "DELETE FROM course WHERE id=$1";
+    const { rowCount } = await pool.query(query, [courseId]);
+    if (rowCount === 0) {
+      return "course not found";
+    }
+    return "deleted";
+  }
 }
 
 module.exports = {

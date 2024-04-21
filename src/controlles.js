@@ -130,7 +130,11 @@ class CourseAPIHandler {
       return res.json({ error: "Error" });
     }
   }
-
+  static async delete(req, res) {
+    const id = req.params.id;
+    const result = await Course.delete(id);
+    return res.json({ message: result });
+  }
   static async getStudents(req, res) {
     try {
       const id = req.params.id;
